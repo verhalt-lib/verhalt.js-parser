@@ -16,7 +16,7 @@ export function keyContent(input?: string): VerhaltKey {
     for (let i = 0; i < input.length; i++) {
         const char = input[i];
 
-        if (!head[1]) {
+        if (head[1] === undefined) {
             handleHeadName(char);
         } else if (depth === 0 && char !== '?') {
             isNullSignable = false;
