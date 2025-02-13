@@ -1,0 +1,24 @@
+{
+  "name": "@verhalt/parser",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/verhalt-lib/verhalt.js-parser.git"
+  },
+  "dependencies": {
+    "@verhalt/types": "^1.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/verhalt-lib/verhalt.js-parser/issues"
+  },
+  "homepage": "https://github.com/verhalt-lib/verhalt.js-parser#readme",
+  "description": ""
+}
