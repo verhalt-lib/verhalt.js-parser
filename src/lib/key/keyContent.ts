@@ -64,7 +64,7 @@ export function keyContent(input?: string): VerhaltKey {
     }
 
     function handleCloseBracket() {
-        if (!head[1]) throw new Error("Key name was not found.");
+        if (head[1] === undefined) throw new Error("Key name was not found.");
         if (depth === 0) throw new Error("Square brackets are not balanced.");
         
         if (depth === 1) {
