@@ -1,14 +1,8 @@
 {
   "name": "@verhalt/parser",
-  "version": "1.0.21",
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
-  "exports": {
-    "./lib": {
-      "import": "./dist/lib/index.js",
-      "types": "./dist/lib/index.d.ts"
-    }
-  },
+  "version": "1.0.22",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build" : "rimraf dist && tsc"
   },
