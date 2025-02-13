@@ -46,8 +46,12 @@ export function keyContent(input?: string): VerhaltKey {
         if (char === '?') {
             isNullSignable = true;
         } else if (char === '[') {
-            if (nameBuffer.length === 0) throw new Error("Key name was not found.");
-            head[1] = nameBuffer.join("");
+            if (nameBuffer.length === 0)  {
+                head[1] = undefined;
+            }
+            else {
+                head[1] = nameBuffer.join("");
+            }
         }
     }
 
