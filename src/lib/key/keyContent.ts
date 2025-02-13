@@ -38,7 +38,6 @@ export function keyContent(input?: string): VerhaltKey {
     }
 
     if (depth !== 0) throw new Error("Square brackets are not balanced.");
-    if (!head[1]) head[1] = nameBuffer.join("");
 
     return [head, body];
 
@@ -95,7 +94,7 @@ export function keyContent(input?: string): VerhaltKey {
         } else {
             if(head[1] === undefined) {
                 if (nameBuffer.length === 0 && !/[a-zA-Z]/.test(char)) {
-                    throw new Error("Invalid Character: Key name must start with a letter.");
+                    throw new Error("Invalid Character: Key name must start with a letter or be blank");
                 }
                 if (nameBuffer.length > 0 && !/[a-zA-Z0-9]/.test(char)) {
                     throw new Error("Invalid Character: Key name must contain letters or numbers.");
