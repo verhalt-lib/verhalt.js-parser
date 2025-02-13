@@ -58,19 +58,22 @@ export function keyContent(input?: string): VerhaltKey {
 
     function handleOpenBracket() {
         if (depth === 0) {
-            body.push([false, -1]);
+            body.push([false, ""]);
             depthBuffer = [];
         }
         depth++;
     }
 
     function handleCloseBracket() {
-        if (head[1] === undefined) throw new Error("Key name was not found.");
         if (depth === 0) throw new Error("Square brackets are not balanced.");
+
+        if(depthBuffer.length === 0) {
+            throw new Error("Invalid Content: Key indexer must contain something.");
+        }
         
         if (depth === 1) {
             const current = body[body.length - 1];
-            current[1] = keyIndex(depthBuffer.join(""));
+            current[1] = depthBuffer.join("");
             isNullSignable = true;
         }
         depth--;
