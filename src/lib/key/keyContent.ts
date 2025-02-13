@@ -94,16 +94,20 @@ export function keyContent(input?: string): VerhaltKey {
                 depthBuffer.push(char);
             }
         } else {
-            if (nameBuffer.length === 0 && !/[a-zA-Z]/.test(char)) {
-                switch (char) {
-                    case " ":
-                        throw new Error("Invalid Character: Key must not start with white spaces.");
-                    default:
-                        throw new Error("Invalid Character: Key must start with a letter or '[' character.");
+            if (nameBuffer.length === 0) {
+                if(!/[a-zA-Z]/.test(char)) {
+                    switch (char) {
+                        case " ":
+                            throw new Error("Invalid Character: Key must not start with white spaces.");
+                        default:
+                            throw new Error("Invalid Character: Key must start with a letter or '[' character.");
+                    }
                 }
             }
-            if (nameBuffer.length > 0 && !/[a-zA-Z0-9]/.test(char)) {
-                throw new Error("Invalid Character: Key name must contain letters or numbers.");
+            else {
+                if(!/[a-zA-Z0-9]/.test(char)) {
+                    throw new Error("Invalid Character: Key name must contain letters or numbers.");
+                }
             }
 
             nameBuffer.push(char);
