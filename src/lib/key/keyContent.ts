@@ -7,12 +7,19 @@ export function keyContent(input?: string): VerhaltKey {
     let nameBuffer: string[] = [];
     let depthBuffer: string[] = [];
 
-    let head: VerhaltKeyHead = [false, undefined];
-    let body: VerhaltKeyBody = [];
-
+    let depth = 0;
     let charIndex = 0;
     let charIndexNullable = -1;
-    let depth = 0;
+    let globalNullable = false;
+    let globalNullableIndex = -1;
+
+    if(input.slice(input.length - 2, input.length) === "??") {
+        globalNullable = true;
+        globalNullableIndex = input.length - 1;
+    }
+
+    let head: VerhaltKeyHead = [globalNullable, undefined];
+    let body: VerhaltKeyBody = [];
 
     for (charIndex = 0; charIndex < input.length; charIndex++) {
         const char = input[charIndex];
@@ -63,7 +70,7 @@ export function keyContent(input?: string): VerhaltKey {
 
     function handleOpenBracket() {
         if (depth === 0) {
-            body.push([false, ""]);
+            body.push([globalNullable, ""]);
             depthBuffer = [];
         }
         depth++;
@@ -79,6 +86,7 @@ export function keyContent(input?: string): VerhaltKey {
 
             const current = body[body.length - 1];
             current[1] = depthBuffer.join("");
+
             charIndexNullable = charIndex + 1;
         }
         depth--;
@@ -86,13 +94,20 @@ export function keyContent(input?: string): VerhaltKey {
 
     function handleNullable() {
         if (depth !== 0) return;
-        if (charIndexNullable !== charIndex) throw new Error("Invalid '?' character");
+        if (charIndexNullable !== charIndex) {
 
-        const current = body[body.length - 1];
-        if (current) {
-            current[0] = true;
-        } else {
-            head[0] = true;
+            if(charIndex !== globalNullableIndex) {
+                throw new Error("Invalid '?' character");
+            }
+        }
+
+        if(!globalNullable) {
+            const current = body[body.length - 1];
+            if (current) {
+                current[0] = true;
+            } else {
+                head[0] = true;
+            }
         }
 
         charIndexNullable = -1;
