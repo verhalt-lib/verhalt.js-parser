@@ -37,6 +37,7 @@ export function keyContent(input?: string): VerhaltKey {
     }
 
     if (depth !== 0) throw new Error("Square brackets are not balanced.");
+    if (head[1] === undefined) head[1] = nameBuffer.join("");
 
     return [head, body];
 
