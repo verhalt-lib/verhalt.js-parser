@@ -10,7 +10,6 @@ export function keyContent(input?: string): VerhaltKey {
     let head: VerhaltKeyHead = [false, undefined];
     let body: VerhaltKeyBody = [];
 
-    let isNullable = false;
     let isNullSignable = false;
     let depth = 0;
 
@@ -80,7 +79,7 @@ export function keyContent(input?: string): VerhaltKey {
         if (current) {
             current[0] = true;
         } else {
-            isNullable = true;
+            head[0] = true;
         }
     }
 
