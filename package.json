@@ -19,5 +19,8 @@
     "url": "https://github.com/verhalt-lib/verhalt.js-parser/issues"
   },
   "homepage": "https://github.com/verhalt-lib/verhalt.js-parser#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  }
 }
