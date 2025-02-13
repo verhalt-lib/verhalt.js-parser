@@ -1,5 +1,4 @@
-import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types";
-import { keyIndex } from "./keyIndex";
+import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types/lib";
 
 export function keyContent(input?: string): VerhaltKey {
     if (!input) return [undefined, undefined];
