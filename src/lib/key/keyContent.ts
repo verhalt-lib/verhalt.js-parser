@@ -10,18 +10,15 @@ export function keyContent(input?: string): VerhaltKey {
     let head: VerhaltKeyHead = [false, undefined];
     let body: VerhaltKeyBody = [];
 
-    let isNullSignable = false;
+    let charIndex = 0;
+    let charIndexNullable = -1;
     let depth = 0;
 
-    for (let i = 0; i < input.length; i++) {
-        const char = input[i];
+    for (charIndex = 0; charIndex < input.length; charIndex++) {
+        const char = input[charIndex];
 
         if (head[1] === undefined) {
             handleHeadName(char);
-        } else {
-            if (depth === 0 && char !== '?') {
-                isNullSignable = false;
-            }
         }
 
         switch (char) {
@@ -44,14 +41,18 @@ export function keyContent(input?: string): VerhaltKey {
     return [head, body];
 
     function handleHeadName(char: string) {
-        if (char === '?') {
-            isNullSignable = true;
-        } else if (char === '[') {
-            if (nameBuffer.length === 0)  {
-                head[1] = null;
+        switch(char) {
+            case "?" : {
+                charIndexNullable = charIndex;
             }
-            else {
-                head[1] = nameBuffer.join("");
+            case "[" : {
+                if (nameBuffer.length === 0)  {
+                    head[1] = null;
+                }
+                else {
+                    head[1] = nameBuffer.join("");
+                }
+                break;
             }
         }
     }
@@ -66,22 +67,22 @@ export function keyContent(input?: string): VerhaltKey {
 
     function handleCloseBracket() {
         if (depth === 0) throw new Error("Square brackets are not balanced.");
-
-        if(depthBuffer.length === 0) {
-            throw new Error("Invalid Content: Key indexer must contain something.");
-        }
         
         if (depth === 1) {
+            if(depthBuffer.length === 0) {
+                throw new Error("Invalid Content: Key indexer must contain something.");
+            }
+
             const current = body[body.length - 1];
             current[1] = depthBuffer.join("");
-            isNullSignable = true;
+            charIndexNullable = charIndex + 1;
         }
         depth--;
     }
 
     function handleNullable() {
         if (depth !== 0) return;
-        if (!isNullSignable) throw new Error("Invalid '?' character");
+        if (charIndexNullable !== charIndex) throw new Error("Invalid '?' character");
 
         const current = body[body.length - 1];
         if (current) {
@@ -89,6 +90,8 @@ export function keyContent(input?: string): VerhaltKey {
         } else {
             head[0] = true;
         }
+
+        charIndexNullable = -1;
     }
 
     function handleCharacter(char: string) {
