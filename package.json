@@ -35,7 +35,8 @@
     "@verhalt/types": "^1.0.2"
   },
   "devDependencies": {
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "vitest": "^3.0.5"
   },
   "publishConfig": {
     "access": "public",
