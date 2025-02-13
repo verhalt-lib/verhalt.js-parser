@@ -34,9 +34,9 @@ export function keyContent(input?: string): VerhaltKey {
             case '?':
                 handleNullable();
                 break;
-            default:
-                handleCharacter(char);
         }
+
+        handleCharacter(char);
     }
 
     if (depth !== 0) throw new Error("Square brackets are not balanced.");
@@ -91,7 +91,21 @@ export function keyContent(input?: string): VerhaltKey {
     function handleCharacter(char: string) {
         if (head[1] !== undefined) {
             if (depth > 0) {
-                depthBuffer.push(char);
+                switch (char) {
+                    case "[": {
+                        if(depth === 1) {
+                            break;
+                        }
+                    }
+                    default: {
+                        depthBuffer.push(char);
+                    }
+                }
+            }
+            else {
+                if(!/[\[\]\?]/.test(char)) {
+                    throw new Error("Invalid Character: Key must just contain '[', ']' or '?' character after name.");
+                }
             }
         } else {
             if (nameBuffer.length === 0) {
