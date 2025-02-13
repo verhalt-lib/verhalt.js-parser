@@ -1,4 +1,5 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types";
+import { keyIndex } from "./keyIndex";
 
 export function keyContent(input?: string): VerhaltKey {
     if (!input) return [undefined, undefined];
@@ -15,7 +16,6 @@ export function keyContent(input?: string): VerhaltKey {
 
     for (let i = 0; i < input.length; i++) {
         const char = input[i];
-        const current = body[body.length - 1];
 
         if (!head[1]) {
             handleHeadName(char);
@@ -66,7 +66,7 @@ export function keyContent(input?: string): VerhaltKey {
         
         if (depth === 1) {
             const current = body[body.length - 1];
-            current[1] = -1;
+            current[1] = keyIndex(depthBuffer.join(""));
             isNullSignable = true;
         }
         depth--;
