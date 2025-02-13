@@ -1,15 +1,12 @@
 {
   "name": "@verhalt/parser",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    "." : {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
     "./lib" : {
       "import": "./dist/lib/index.js",
+      "require": "./dist/lib/index.js",
       "types": "./dist/lib/index.d.ts"
     }
   },
