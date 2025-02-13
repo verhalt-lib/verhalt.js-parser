@@ -47,7 +47,7 @@ export function keyContent(input?: string): VerhaltKey {
             isNullSignable = true;
         } else if (char === '[') {
             if (nameBuffer.length === 0)  {
-                head[1] = undefined;
+                head[1] = null;
             }
             else {
                 head[1] = nameBuffer.join("");
@@ -93,13 +93,15 @@ export function keyContent(input?: string): VerhaltKey {
                 depthBuffer.push(char);
             }
         } else {
-            if (nameBuffer.length === 0 && !/[a-zA-Z]/.test(char)) {
-                throw new Error("Invalid Character: Key name must start with a letter.");
+            if(head[1] === undefined) {
+                if (nameBuffer.length === 0 && !/[a-zA-Z]/.test(char)) {
+                    throw new Error("Invalid Character: Key name must start with a letter.");
+                }
+                if (nameBuffer.length > 0 && !/[a-zA-Z0-9]/.test(char)) {
+                    throw new Error("Invalid Character: Key name must contain letters or numbers.");
+                }
+                nameBuffer.push(char);
             }
-            if (nameBuffer.length > 0 && !/[a-zA-Z0-9]/.test(char)) {
-                throw new Error("Invalid Character: Key name must contain letters or numbers.");
-            }
-            nameBuffer.push(char);
         }
     }
 }
