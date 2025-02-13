@@ -95,7 +95,12 @@ export function keyContent(input?: string): VerhaltKey {
             }
         } else {
             if (nameBuffer.length === 0 && !/[a-zA-Z]/.test(char)) {
-                throw new Error("Invalid Character: Key name must start with a letter or be blank");
+                switch (char) {
+                    case " ":
+                        throw new Error("Invalid Character: Key must not start with white spaces.");
+                    default:
+                        throw new Error("Invalid Character: Key must start with a letter or '[' character.");
+                }
             }
             if (nameBuffer.length > 0 && !/[a-zA-Z0-9]/.test(char)) {
                 throw new Error("Invalid Character: Key name must contain letters or numbers.");
