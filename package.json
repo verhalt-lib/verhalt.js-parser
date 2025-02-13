@@ -1,7 +1,8 @@
 {
   "name": "@verhalt/parser",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +11,7 @@
     "url": "git+https://github.com/verhalt-lib/verhalt.js-parser.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "k4yr2",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/verhalt-lib/verhalt.js-parser/issues"
