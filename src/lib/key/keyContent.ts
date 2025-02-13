@@ -43,6 +43,9 @@ export function keyContent(input?: string): VerhaltKey {
     function handleHeadName(char: string) {
         switch(char) {
             case "?" : {
+                if(nameBuffer.length === 0) {
+                    throw new Error("Invalid Character: Key cannot start with '?' character.");
+                }
                 charIndexNullable = charIndex;
             }
             case "[" : {
