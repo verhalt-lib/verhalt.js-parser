@@ -1,15 +1,23 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types/lib";
 
+export function keyValue(input: string) : VerhaltKey | undefined {
+    if(typeof input !== "string") throw new Error("Invalid Content: Key must be string");
+    if(input.length === 0) throw new Error("Invalid Content: Key must contain something.");
 
+    const token = input[0];
+    const isRoot = token === ":";
 
-export function keyValue(input?: string) : VerhaltKey | undefined {
+    if(!isRoot && token !== ".") throw new Error("Invalid Character: Key token must be ':' or '.' character.");
+
+    return keyValueWithoutToken(input.substring(1), isRoot);
+}
+
+export function keyValueWithoutToken(input: string, isRoot : boolean = false) : VerhaltKey | undefined {
     if (!input) return undefined;
-    if(![":", "."].includes(input[0])) throw new Error("Invalid Character: Key must start with ':' or '.' character.");
     
     let head: VerhaltKeyHead = { silent: false }
     let body: VerhaltKeyBody = { name: { value: "", nullable: false, dynamic: false }, indexes: []}
 
-    let isRoot = input[0] === ":";
     let nameBuffer: string[] = [];
     let depthBuffer: string[] = [];
 
@@ -25,7 +33,7 @@ export function keyValue(input?: string) : VerhaltKey | undefined {
     }
 
 
-    for (charIndex = 1; charIndex < input.length; charIndex++) {
+    for (charIndex = 0; charIndex < input.length; charIndex++) {
         const char = input[charIndex];
 
         if (name === undefined) {
