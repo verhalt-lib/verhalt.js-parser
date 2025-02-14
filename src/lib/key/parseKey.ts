@@ -1,5 +1,5 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody, VerhaltKeyItem } from "@verhalt/types/lib";
-import { checkKey } from "./checkKey";
+import { checkKey, checkKeyWithoutToken } from "./checkKey";
 
 export function parseKey(input: string) : VerhaltKey | undefined {
     checkKey(input);
@@ -8,16 +8,11 @@ export function parseKey(input: string) : VerhaltKey | undefined {
 }
 
 export function parseKeyUnsafe(input: string) : VerhaltKey | undefined {
-    const token = input[0];
-    const isRoot = token === ":";
-
-    if(!isRoot && token !== ".") throw new Error("[VERHALT-KEY]: Key token must be ':' or '.' character.");
-
-    return parseKeyWithoutTokenUnsafe(input.substring(1), isRoot);
+    return parseKeyWithoutTokenUnsafe(input.substring(1), input[0] === ":");
 }
 
 export function parseKeyWithoutToken(input: string) : VerhaltKey | undefined {
-    checkKey(input);
+    checkKeyWithoutToken(input);
 
     return parseKeyWithoutTokenUnsafe(input);
 }
