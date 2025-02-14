@@ -1,6 +1,8 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types/lib";
 
-export function keyContent(input?: string) : VerhaltKey | undefined {
+
+
+export function keyValue(input?: string) : VerhaltKey | undefined {
     if (!input) return undefined;
     if(![":", "."].includes(input[0])) throw new Error("Invalid Character: Key must start with ':' or '.' character.");
     
