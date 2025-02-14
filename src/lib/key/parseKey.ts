@@ -1,8 +1,8 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody, VerhaltKeyItem } from "@verhalt/types/lib";
+import { checkKey } from "./checkKey";
 
 export function parseKey(input: string) : VerhaltKey | undefined {
-    if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
-    if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
+    checkKey(input);
 
     return parseKeyUnsafe(input);
 }
@@ -17,8 +17,7 @@ export function parseKeyUnsafe(input: string) : VerhaltKey | undefined {
 }
 
 export function parseKeyWithoutToken(input: string) : VerhaltKey | undefined {
-    if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
-    if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
+    checkKey(input);
 
     return parseKeyWithoutTokenUnsafe(input);
 }
