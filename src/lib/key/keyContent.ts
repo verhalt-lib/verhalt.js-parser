@@ -2,7 +2,9 @@ import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types/lib";
 
 export function keyContent(input?: string): VerhaltKey {
     if (!input) return [undefined, undefined];
-
+    if(![":", "."].includes(input[0])) throw new Error("Invalid Character: Key must start with ':' or '.' character.");
+    
+    let isRoot = input[0] === ":";
     let nameBuffer: string[] = [];
     let depthBuffer: string[] = [];
 
@@ -57,6 +59,10 @@ export function keyContent(input?: string): VerhaltKey {
             }
             case "[" : {
                 if (nameBuffer.length === 0)  {
+                    if(!isRoot) {
+                        throw new Error("Invalid Character: Non-root key must start with a name.");
+                    }
+
                     head[1] = null;
                 }
                 else {
