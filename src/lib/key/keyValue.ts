@@ -4,15 +4,26 @@ export function keyValue(input: string) : VerhaltKey | undefined {
     if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
     if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
 
+    return keyValueUnsafe(input);
+}
+
+export function keyValueUnsafe(input: string) : VerhaltKey | undefined {
     const token = input[0];
     const isRoot = token === ":";
 
     if(!isRoot && token !== ".") throw new Error("[VERHALT-KEY]: Key token must be ':' or '.' character.");
 
-    return keyValueWithoutToken(input.substring(1), isRoot);
+    return keyValueWithoutTokenUnsafe(input.substring(1), isRoot);
 }
 
-export function keyValueWithoutToken(input: string, isRoot : boolean = false) : VerhaltKey | undefined {
+export function keyValueWithoutToken(input: string) : VerhaltKey | undefined {
+    if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
+    if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
+
+    return keyValueWithoutTokenUnsafe(input);
+}
+
+export function keyValueWithoutTokenUnsafe(input: string, isRoot : boolean = false) : VerhaltKey | undefined {
     if (!input) return undefined;
 
     let nameBuffer: string[] = [];
