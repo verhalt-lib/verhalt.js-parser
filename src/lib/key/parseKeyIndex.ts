@@ -1,4 +1,4 @@
-export function keyIndex(input? : string) : number | string | null {
+export function parseKeyIndex(input? : string) : number | string | null {
     if(input === undefined) return null;
 
     if(/^(([1-9][0-9]*)|0)/.test(input)) {

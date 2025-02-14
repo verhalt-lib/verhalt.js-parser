@@ -1,4 +1,4 @@
 export * from "./key/parseKey";
-export * from "./key/keyIndex";
-export * from "./path/pathKeys";
-export * from "./route/routePaths";
+export * from "./key/parseKeyIndex";
+export * from "./path/parsePathKeys";
+export * from "./route/parseRoutePaths";

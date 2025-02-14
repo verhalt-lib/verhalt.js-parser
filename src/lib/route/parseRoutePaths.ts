@@ -1,4 +1,4 @@
-export function routePaths(input?: string): string[] {
+export function parseRoutePaths(input?: string): string[] {
     if (!input) {
         return [];
     }

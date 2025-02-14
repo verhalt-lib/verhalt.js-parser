@@ -1,4 +1,4 @@
-export function pathKeys(input?: string): string[] { 
+export function parsePathKeys(input?: string): string[] { 
     if (!input) {
         return [];
     }
