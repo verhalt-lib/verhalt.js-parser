@@ -32,7 +32,8 @@
   "homepage": "https://github.com/verhalt-lib/verhalt.js-parser#readme",
   "description": "",
   "dependencies": {
-    "@verhalt/types": "^1.2.1"
+    "@verhalt/types": "^1.2.1",
+    "verhalt": "^1.1.0"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
