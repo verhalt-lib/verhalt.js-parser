@@ -53,6 +53,7 @@ export function keyContent(input?: string) : VerhaltKey | undefined {
     if (depth !== 0) throw new Error("Square brackets are not balanced.");
     if (name === undefined) name = nameBuffer.join("");
 
+    body.name.value = name;
     return { head, body };
 
     function handleHeadName(char: string) {
