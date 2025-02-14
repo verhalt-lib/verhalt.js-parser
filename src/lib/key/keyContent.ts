@@ -4,6 +4,9 @@ export function keyContent(input?: string) : VerhaltKey | undefined {
     if (!input) return undefined;
     if(![":", "."].includes(input[0])) throw new Error("Invalid Character: Key must start with ':' or '.' character.");
     
+    let head: VerhaltKeyHead = { silent: false }
+    let body: VerhaltKeyBody = { name: { value: "", nullable: false, dynamic: false }, indexes: []}
+
     let isRoot = input[0] === ":";
     let nameBuffer: string[] = [];
     let depthBuffer: string[] = [];
@@ -12,21 +15,13 @@ export function keyContent(input?: string) : VerhaltKey | undefined {
     let depth = 0;
     let charIndex = 0;
     let charIndexNullable = -1;
-    let globalNullable = false;
     let globalNullableIndex = -1;
 
     if(input.slice(input.length - 2, input.length) === "??") {
-        globalNullable = true;
+        head.silent = true;
         globalNullableIndex = input.length - 1;
     }
 
-    let head: VerhaltKeyHead = {
-        silent: globalNullable
-    }
-    let body: VerhaltKeyBody = {
-        name: { value: "", nullable: false, dynamic: false },
-        indexes: [],
-    }
 
     for (charIndex = 1; charIndex < input.length; charIndex++) {
         const char = input[charIndex];
@@ -113,13 +108,11 @@ export function keyContent(input?: string) : VerhaltKey | undefined {
             }
         }
 
-        if(!globalNullable) {
-            const current = body.indexes[body.indexes.length - 1];
-            if (current) {
-                current.nullable = true;
-            } else {
-                body.name.nullable = true;
-            }
+        const current = body.indexes[body.indexes.length - 1];
+        if (current) {
+            current.nullable = true;
+        } else {
+            body.name.nullable = true;
         }
 
         charIndexNullable = -1;
