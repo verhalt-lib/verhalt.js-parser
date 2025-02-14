@@ -9,7 +9,6 @@ export function pathKeys(input?: string): string[] {
 
     for (let i = 0; i < input.length; i++) {
         const char = input[i];
-        let skipChar = false;
 
         switch (char) {
             case "[":
@@ -34,7 +33,6 @@ export function pathKeys(input?: string): string[] {
                     break;
                 }
                 if (currentKey.length === 0) {
-                    skipChar = true;
                     break;
                 }
                 throw new Error("Unexpected colon character.");
@@ -48,13 +46,10 @@ export function pathKeys(input?: string): string[] {
                 }
                 values.push(currentKey.join(""));
                 currentKey = [];
-                skipChar = true;
                 break;
         }
 
-        if (!skipChar) {
-            currentKey.push(char);
-        }
+        currentKey.push(char);
     }
 
     values.push(currentKey.join(""));
