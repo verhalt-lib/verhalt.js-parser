@@ -22,7 +22,7 @@ export function keyContent(input?: string): VerhaltKey {
     let head: VerhaltKeyHead = [globalNullable, undefined];
     let body: VerhaltKeyBody = [];
 
-    for (charIndex = 0; charIndex < input.length; charIndex++) {
+    for (charIndex = 1; charIndex < input.length; charIndex++) {
         const char = input[charIndex];
 
         if (head[1] === undefined) {
