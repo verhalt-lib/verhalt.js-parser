@@ -5,30 +5,30 @@ export function checkKeyValue(input: string) : void {
     if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
 }
 
-export function parsekeyValue(input: string) : VerhaltKey | undefined {
+export function parseKey(input: string) : VerhaltKey | undefined {
     if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
     if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
 
-    return parsekeyValueUnsafe(input);
+    return parseKeyUnsafe(input);
 }
 
-export function parsekeyValueUnsafe(input: string) : VerhaltKey | undefined {
+export function parseKeyUnsafe(input: string) : VerhaltKey | undefined {
     const token = input[0];
     const isRoot = token === ":";
 
     if(!isRoot && token !== ".") throw new Error("[VERHALT-KEY]: Key token must be ':' or '.' character.");
 
-    return parsekeyValueWithoutTokenUnsafe(input.substring(1), isRoot);
+    return parseKeyWithoutTokenUnsafe(input.substring(1), isRoot);
 }
 
-export function parsekeyValueWithoutToken(input: string) : VerhaltKey | undefined {
+export function parseKeyWithoutToken(input: string) : VerhaltKey | undefined {
     if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
     if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
 
-    return parsekeyValueWithoutTokenUnsafe(input);
+    return parseKeyWithoutTokenUnsafe(input);
 }
 
-export function parsekeyValueWithoutTokenUnsafe(input: string, isRoot : boolean = false) : VerhaltKey | undefined {
+export function parseKeyWithoutTokenUnsafe(input: string, isRoot : boolean = false) : VerhaltKey | undefined {
     if (!input) return undefined;
 
     let nameBuffer: string[] = [];
