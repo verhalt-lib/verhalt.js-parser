@@ -1,10 +1,5 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody, VerhaltKeyItem } from "@verhalt/types/lib";
 
-export function checkKeyValue(input: string) : void {
-    if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
-    if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
-}
-
 export function parseKey(input: string) : VerhaltKey | undefined {
     if(typeof input !== "string") throw new Error("[VERHALT-KEY]: Key must be string");
     if(input.length === 0) throw new Error("[VERHALT-KEY]: Key must contain something.");
