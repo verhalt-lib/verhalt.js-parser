@@ -1,13 +1,14 @@
 import { VerhaltKey, VerhaltKeyHead, VerhaltKeyBody } from "@verhalt/types/lib";
 
-export function keyContent(input?: string): VerhaltKey {
-    if (!input) return [undefined, undefined];
+export function keyContent(input?: string) : VerhaltKey | undefined {
+    if (!input) return undefined;
     if(![":", "."].includes(input[0])) throw new Error("Invalid Character: Key must start with ':' or '.' character.");
     
     let isRoot = input[0] === ":";
     let nameBuffer: string[] = [];
     let depthBuffer: string[] = [];
 
+    let name : string | null | undefined = undefined;
     let depth = 0;
     let charIndex = 0;
     let charIndexNullable = -1;
@@ -19,13 +20,18 @@ export function keyContent(input?: string): VerhaltKey {
         globalNullableIndex = input.length - 1;
     }
 
-    let head: VerhaltKeyHead = [globalNullable, undefined];
-    let body: VerhaltKeyBody = [];
+    let head: VerhaltKeyHead = {
+        silent: globalNullable
+    }
+    let body: VerhaltKeyBody = {
+        name: { value: "", nullable: false, dynamic: false },
+        indexes: [],
+    }
 
     for (charIndex = 1; charIndex < input.length; charIndex++) {
         const char = input[charIndex];
 
-        if (head[1] === undefined) {
+        if (name === undefined) {
             handleHeadName(char);
         }
 
@@ -45,9 +51,9 @@ export function keyContent(input?: string): VerhaltKey {
     }
 
     if (depth !== 0) throw new Error("Square brackets are not balanced.");
-    if (head[1] === undefined) head[1] = nameBuffer.join("");
+    if (name === undefined) name = nameBuffer.join("");
 
-    return [head, body];
+    return { head, body };
 
     function handleHeadName(char: string) {
         switch(char) {
@@ -63,10 +69,10 @@ export function keyContent(input?: string): VerhaltKey {
                         throw new Error("Invalid Character: Non-root key must start with a name.");
                     }
 
-                    head[1] = null;
+                    name = null;
                 }
                 else {
-                    head[1] = nameBuffer.join("");
+                    name = nameBuffer.join("");
                 }
                 break;
             }
@@ -75,7 +81,7 @@ export function keyContent(input?: string): VerhaltKey {
 
     function handleOpenBracket() {
         if (depth === 0) {
-            body.push([globalNullable, ""]);
+            body.indexes.push({ value: "", nullable: false, dynamic: false });
             depthBuffer = [];
         }
         depth++;
@@ -89,8 +95,8 @@ export function keyContent(input?: string): VerhaltKey {
                 throw new Error("Invalid Content: Key indexer must contain something.");
             }
 
-            const current = body[body.length - 1];
-            current[1] = depthBuffer.join("");
+            const current = body.indexes[body.indexes.length - 1];
+            current.value = depthBuffer.join("");
 
             charIndexNullable = charIndex + 1;
         }
@@ -107,11 +113,11 @@ export function keyContent(input?: string): VerhaltKey {
         }
 
         if(!globalNullable) {
-            const current = body[body.length - 1];
+            const current = body.indexes[body.indexes.length - 1];
             if (current) {
-                current[0] = true;
+                current.nullable = true;
             } else {
-                head[0] = true;
+                body.name.nullable = true;
             }
         }
 
@@ -119,7 +125,7 @@ export function keyContent(input?: string): VerhaltKey {
     }
 
     function handleCharacter(char: string) {
-        if (head[1] !== undefined) {
+        if (name !== undefined) {
             if (depth > 0) {
                 switch (char) {
                     case "[": {
