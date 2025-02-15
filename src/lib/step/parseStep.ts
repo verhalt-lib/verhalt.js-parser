@@ -2,8 +2,10 @@ import { VerhaltStep, VerhaltStepCatching, VerhaltStepContent, VerhaltStepDispla
 import { validateStepName } from "./validateStepName";
 import { validateStepIndex } from "./validateStepIndex";
 import { CharInfo } from "../charInfo";
+import { checkStep } from "./checkStep";
 
 export function parseStep(input : string) : VerhaltStep | undefined {
+    checkStep(input);
     return parseStepUnsafe(input);
 }
 
@@ -50,28 +52,30 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
                 throw new Error("[VERHALT-STEP]: Bracket is not defined.");
             }
 
-            if(bracketDepth === 0) {
-                contentBuffer.pop();
-            }
-
-            if(bracketForm.includes(char.target))
+            if(bracketForm.includes(char.target)) {
+                if(bracketDepth === 0) {
+                    contentBuffer.pop();
+                }
+    
                 bracketDepth++;
+            }
         }
         else if(char.isCrulyCloseBracket || char.isSquareCloseBracket) {
             if(!bracketForm) {
                 throw new Error("[VERHALT-STEP]: Bracket is not defined.");
             }
 
-            if(bracketDepth === 1) {
-                if(!["?", "!", undefined].includes(input[ci + 1])) {
-                    throw new Error("[VERHALT-STEP]: Unexpected character after closing bracket.");
+            if(bracketForm.includes(char.target)) {
+                if(bracketDepth === 1) {
+                    if(!["?", "!", undefined].includes(input[ci + 1])) {
+                        throw new Error("[VERHALT-STEP]: Unexpected character after closing bracket." + ci);
+                    }
+    
+                    contentBuffer.pop();
                 }
 
-                contentBuffer.pop();
-            }
-
-            if(bracketForm.includes(char.target))
                 bracketDepth--;
+            }
         }
         else {
             if(bracketDepth === 0) {
