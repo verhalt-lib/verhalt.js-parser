@@ -79,7 +79,7 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
         }
         else {
             if(bracketDepth === 0) {
-                if(!char.isAlphanumeric) {
+                if(!(char.isAlphanumeric||char.target === "_")) {
 
                     if(ci === input.length - 1) {
 
