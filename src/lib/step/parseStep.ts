@@ -25,6 +25,7 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
 
     for(let ci = 0; ci < input.length; ci++) {
         const char = new CharInfo(input[ci]);
+        contentBuffer.push(char.target);
 
         if(ci === 0) {
             if(char.isAlphabetic) {
@@ -44,13 +45,13 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
             }
         }
 
-        if(bracketDepth !== 0) {
-            contentBuffer.push(char.target);
-        }
-
         if(char.isCrulyOpenBracket || char.isSquareOpenBracket) {
             if(!bracketForm) {
                 throw new Error("[VERHALT-STEP]: Bracket is not defined.");
+            }
+
+            if(bracketDepth === 0) {
+                contentBuffer.pop();
             }
 
             if(bracketForm.includes(char.target))
@@ -104,7 +105,7 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
     }
 
     display = input;
-    content = bracketForm ? contentBuffer.join("") : display;
+    content = contentBuffer.join("");
 
     if(form === "name") {
         structure = validateStepName(content) ? "static" : "variable";
