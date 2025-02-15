@@ -12,6 +12,9 @@ export class CharInfo implements Disposable {
     #isSquareOpen : boolean | undefined = false;
     #isSquareClose : boolean | undefined = false;
 
+    #isQuestionMark : boolean | undefined = false;
+    #isExclamationMark : boolean | undefined = false;
+
     constructor(target : string) {
         if(typeof target !== "string") throw new Error("[VERHALT-INFOCHAR]: Target must be string");
         if(target.length !== 1) throw new Error("[VERHALT-INFOCHAR]: Target must be of length 1");
@@ -38,6 +41,12 @@ export class CharInfo implements Disposable {
                     break;
                 case "]":
                     this.#isSquareClose = true;
+                    break;
+                case "?":
+                    this.#isQuestionMark = true;
+                    break;
+                case "!":
+                    this.#isExclamationMark = true;
                     break;
             }
         }
@@ -95,6 +104,15 @@ export class CharInfo implements Disposable {
 
     public get isSquareClose() : boolean {
         return this.#isSquareClose as boolean;
+    }
+
+
+    public get isQuestionMark() : boolean {
+        return this.#isQuestionMark as boolean;
+    }
+
+    public get isExclamationMark() : boolean {
+        return this.#isExclamationMark as boolean;
     }
 
 
