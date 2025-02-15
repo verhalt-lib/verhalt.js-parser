@@ -1,4 +1,4 @@
-export abstract class InfoChar implements Disposable {
+export class InfoChar implements Disposable {
     #char : string | undefined;
     #isAlphabeticLowerCase : boolean | undefined;
     #isAlphabeticUpperCase : boolean | undefined;
@@ -79,10 +79,14 @@ export abstract class InfoChar implements Disposable {
         return this.#isUnknown as boolean;
     }
 
-    
-    protected abstract onDispose(): void;
 
-    [Symbol.dispose](): void {
+    [Symbol.dispose]() : void {
         this.#char = undefined;
+        this.#isAlphabeticLowerCase = undefined;
+        this.#isAlphabeticUpperCase = undefined;
+        this.#isNumeric = undefined;
+        this.#isWhitespace = undefined;
+        this.#isSpecial = undefined;
+        this.#isUnknown = undefined;
     }
 }
