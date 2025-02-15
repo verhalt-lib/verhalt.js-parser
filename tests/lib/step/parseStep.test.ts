@@ -31,6 +31,8 @@ it("should return correct values for variable name steps", () => {
     expect(parseStep("{:My_StEp[:{My_OtHeR_sTeP}]}")).toEqual({ form: "name", display: "{:My_StEp[:{My_OtHeR_sTeP}]}", content: ":My_StEp[:{My_OtHeR_sTeP}]", structure: "variable", catching: "native" });
     expect(parseStep("{:My_StEp[:{My_OtHeR_sTeP}]}?")).toEqual({ form: "name", display: "{:My_StEp[:{My_OtHeR_sTeP}]}?", content: ":My_StEp[:{My_OtHeR_sTeP}]", structure: "variable", catching: "optional" });
     expect(parseStep("{:My_StEp[:{My_OtHeR_sTeP}]}!")).toEqual({ form: "name", display: "{:My_StEp[:{My_OtHeR_sTeP}]}!", content: ":My_StEp[:{My_OtHeR_sTeP}]", structure: "variable", catching: "strict" });
+
+    expect(parseStep("{irrelevant content !_^'^_'!^!'_ 354* [] {} }")).toEqual({ form: "name", display: "{irrelevant content !_^'^_'!^!'_ 354* [] {} }", content: "irrelevant content !_^'^_'!^!'_ 354* [] {} ", structure: "variable", catching: "native" });
 })
 
 it("should return correct values for static index steps", () => {
@@ -47,4 +49,6 @@ it("should return correct values for variable index steps", () => {
     expect(parseStep("[:My_StEp[:{My_OtHeR_sTeP}]]")).toEqual({ form: "index", display: "[:My_StEp[:{My_OtHeR_sTeP}]]", content: ":My_StEp[:{My_OtHeR_sTeP}]", structure: "variable", catching: "native" });
     expect(parseStep("[:My_StEp[:{My_OtHeR_sTeP}]]?")).toEqual({ form: "index", display: "[:My_StEp[:{My_OtHeR_sTeP}]]?", content: ":My_StEp[:{My_OtHeR_sTeP}]", structure: "variable", catching: "optional" });
     expect(parseStep("[:My_StEp[:{My_OtHeR_sTeP}]]!")).toEqual({ form: "index", display: "[:My_StEp[:{My_OtHeR_sTeP}]]!", content: ":My_StEp[:{My_OtHeR_sTeP}]", structure: "variable", catching: "strict" });
+
+    expect(parseStep("[irrelevant content !_^'^_'!^!'_ 354* [] {} ]")).toEqual({ form: "index", display: "[irrelevant content !_^'^_'!^!'_ 354* [] {} ]", content: "irrelevant content !_^'^_'!^!'_ 354* [] {} ", structure: "variable", catching: "native" });
 })
