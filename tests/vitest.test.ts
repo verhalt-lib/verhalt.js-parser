@@ -1,9 +1,11 @@
 import { test } from 'vitest';
 
 test('keyContent', async (context) => {
-    const {routePaths} = await import('../src/lib/route/routePaths');
-    const {pathKeys} = await import('../src/lib/path/pathKeys');
-    const {keyContent} = await import('../src/lib/key/keyContent');
+    const {parseRoutePaths: routePaths} = await import('../src/lib/route/parseRoutePaths');
+    const {parsePathKeys: pathKeys} = await import('../src/lib/path/parsePathKeys');
+    const {parseKey: keyValue} = await import('../src/lib/key/parseKey');
 
-    console.log(routePaths("fsdfds[fd][asd]?[3454][:: fdfdls]?? ?? sdfsdf"));
+    const key = keyValue(":gigi?[caga][43]?[df]??");
+    console.log(key?.head);
+    console.log(key?.body.indexes);
 });
