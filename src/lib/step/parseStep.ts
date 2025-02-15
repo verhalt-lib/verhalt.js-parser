@@ -82,7 +82,7 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
 
                     if(ci === input.length - 1) {
 
-                        if(char.isQuestionMark || char.isExclamationMark) {
+                        if(!(char.isQuestionMark || char.isExclamationMark)) {
                             throw new Error("[VERHALT-STEP]: Unexpected character after '?' or '!'.");
                         }
 
