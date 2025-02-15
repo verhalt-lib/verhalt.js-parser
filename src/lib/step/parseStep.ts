@@ -61,7 +61,6 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
                 }
 
                 contentBuffer.pop();
-                finalize = true;
             }
 
             bracketDepth--;
@@ -72,31 +71,29 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
 
                     if(ci === input.length - 1) {
 
-                        if(/[\?\!]/.test(char)) {
-                            switch  (char) {
-                                case "?":
-                                    catching = "optional";
-                                    break;
-                                case "!":
-                                    catching = "strict";
-                                    break;
-                            }
+                        if(!/[\?\!]/.test(char)) {
+                            throw new Error("[VERHALT-STEP]: Unexpected character after '?' or '!'.");
                         }
 
-                        throw new Error("[VERHALT-STEP]: Unexpected character after '?' or '!'.");
+                        switch  (char) {
+                            case "?":
+                                catching = "optional";
+                                break;
+                            case "!":
+                                catching = "strict";
+                                break;
+                        }
                     }
-                    throw new Error("[VERHALT-STEP]: Unexpected character.");
+                    else {
+                        throw new Error("[VERHALT-STEP]: Unexpected character.");
+                    }
                 }
             }
-        }
-
-        if(finalize) {
-            break;
         }
     }
 
     display = input;
-    content = contentBuffer.join("");
+    content = bracketForm ? contentBuffer.join("") : display;
 
     if(form && display && content && structure && catching) {
         return { form, display, content, structure, catching };
