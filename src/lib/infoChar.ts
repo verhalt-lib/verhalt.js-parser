@@ -1,5 +1,5 @@
 export class InfoChar implements Disposable {
-    #char : string | undefined;
+    #target : string | undefined;
     #isAlphabeticLowerCase : boolean | undefined;
     #isAlphabeticUpperCase : boolean | undefined;
     #isNumeric : boolean | undefined;
@@ -7,30 +7,30 @@ export class InfoChar implements Disposable {
     #isSpecial : boolean | undefined;
     #isUnknown : boolean | undefined;
 
-    constructor(char : string) {
-        if(typeof char !== "string") throw new Error("[VERHALT-INFOCHAR]: Char must be string");
-        if(char.length !== 1) throw new Error("[VERHALT-INFOCHAR]: Char must be of length 1");
+    constructor(target : string) {
+        if(typeof target !== "string") throw new Error("[VERHALT-INFOCHAR]: Target must be string");
+        if(target.length !== 1) throw new Error("[VERHALT-INFOCHAR]: Target must be of length 1");
 
-        this.#char = char;
-        this.#isAlphabeticLowerCase = /[a-z]/.test(char);
-        this.#isAlphabeticUpperCase = /[A-Z]/.test(char);
+        this.#target = target;
+        this.#isAlphabeticLowerCase = /[a-z]/.test(target);
+        this.#isAlphabeticUpperCase = /[A-Z]/.test(target);
 
         if(!this.isAlphabetic) {
-            this.#isNumeric = /[0-9]/.test(char);
+            this.#isNumeric = /[0-9]/.test(target);
         }
         else {
             this.#isNumeric = false;
         }
 
         if(!this.isAlphanumeric) {
-            this.#isWhitespace = /\s/.test(char);
+            this.#isWhitespace = /\s/.test(target);
         }
         else {
             this.#isWhitespace = false;
         }
 
         if(!this.isAlphawhite) {
-            this.#isSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(char);
+            this.#isSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(target);
             this.#isUnknown = !this.#isSpecial;
         }
         else {
@@ -40,7 +40,7 @@ export class InfoChar implements Disposable {
     }
 
     public get char() : string {
-        return this.#char as string;
+        return this.#target as string;
     }
 
     public get isLowerCaseLetter() : boolean {
@@ -81,7 +81,7 @@ export class InfoChar implements Disposable {
 
 
     [Symbol.dispose]() : void {
-        this.#char = undefined;
+        this.#target = undefined;
         this.#isAlphabeticLowerCase = undefined;
         this.#isAlphabeticUpperCase = undefined;
         this.#isNumeric = undefined;
