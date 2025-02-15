@@ -4,5 +4,5 @@ export function validateStepIndex(input : string) : boolean {
 }
 
 export function validateStepIndexUnsafe(input : string) : boolean {
-    return /^\b([1-9][0-9]*|0)\b$/.test(input);
+    return /^\b((?:[0]*([1-9][0-9]*))|0*)\b$/.test(input);
 }
