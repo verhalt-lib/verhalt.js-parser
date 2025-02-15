@@ -7,10 +7,10 @@ export class CharInfo implements Disposable {
     #isWhitespace : boolean | undefined = false;
     #isSpecial : boolean | undefined = false;
 
-    #isCrulyOpen : boolean | undefined = false;
-    #isCrulyClose : boolean | undefined = false;
-    #isSquareOpen : boolean | undefined = false;
-    #isSquareClose : boolean | undefined = false;
+    #isCrulyOpenBracket : boolean | undefined = false;
+    #isCrulyCloseBracket : boolean | undefined = false;
+    #isSquareOpenBracket : boolean | undefined = false;
+    #isSquareCloseBracket : boolean | undefined = false;
 
     #isQuestionMark : boolean | undefined = false;
     #isExclamationMark : boolean | undefined = false;
@@ -31,16 +31,16 @@ export class CharInfo implements Disposable {
         if(this.#isSpecial) {
             switch(target) {
                 case "{":
-                    this.#isCrulyOpen = true;
+                    this.#isCrulyOpenBracket = true;
                     break;
                 case "}":
-                    this.#isCrulyClose = true;
+                    this.#isCrulyCloseBracket = true;
                     break;
                 case "[":
-                    this.#isSquareOpen = true;
+                    this.#isSquareOpenBracket = true;
                     break;
                 case "]":
-                    this.#isSquareClose = true;
+                    this.#isSquareCloseBracket = true;
                     break;
                 case "?":
                     this.#isQuestionMark = true;
@@ -90,20 +90,32 @@ export class CharInfo implements Disposable {
     }
 
 
-    public get isCrulyOpen() : boolean {
-        return this.#isCrulyOpen as boolean;
+    public get isCrulyOpenBracket() : boolean {
+        return this.#isCrulyOpenBracket as boolean;
     }
 
-    public get isCrulyClose() : boolean {
-        return this.#isCrulyClose as boolean;
+    public get isCrulyCloseBracket() : boolean {
+        return this.#isCrulyCloseBracket as boolean;
     }
 
-    public get isSquareOpen() : boolean {
-        return this.#isSquareOpen as boolean;
+    public get isCrulyBracket() : boolean {
+        return this.isCrulyOpenBracket || this.isCrulyCloseBracket;
     }
 
-    public get isSquareClose() : boolean {
-        return this.#isSquareClose as boolean;
+    public get isSquareOpenBracket() : boolean {
+        return this.#isSquareOpenBracket as boolean;
+    }
+
+    public get isSquareCloseBracket() : boolean {
+        return this.#isSquareCloseBracket as boolean;
+    }
+
+    public get isSquareBracket() : boolean {
+        return this.isSquareOpenBracket || this.isSquareCloseBracket;
+    }
+
+    public get isBracket() : boolean {
+        return this.isCrulyBracket || this.isSquareBracket;
     }
 
 
@@ -113,6 +125,10 @@ export class CharInfo implements Disposable {
 
     public get isExclamationMark() : boolean {
         return this.#isExclamationMark as boolean;
+    }
+
+    public get isMark() : boolean {
+        return this.isQuestionMark || this.isExclamationMark;
     }
 
 
