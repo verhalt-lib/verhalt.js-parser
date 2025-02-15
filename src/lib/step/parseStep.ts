@@ -27,29 +27,25 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
         const char = new CharInfo(input[ci]);
 
         if(ci === 0) {
-            if(char.isCrulyOpenBracket || char.isSquareOpenBracket) {
-                if(char.isCrulyOpenBracket) {
-                    form = "name";
-                    bracketForm = "{}";
-                }
-                else {
-                    form = "index";
-                    bracketForm = "[]";
-                }
-            }
-            else if(char.isAlphabetic) {
+            if(char.isAlphabetic) {
                 form = "name";
                 bracketForm = undefined;
             }
+            else if(char.isCrulyOpenBracket) {
+                form = "name";
+                bracketForm = "{}";
+            }
+            else if (char.isSquareOpenBracket) {
+                form = "index";
+                bracketForm = "[]";
+            }
             else {
-                throw new Error("[VERHALT-STEP]: It must start with alphabetic character.");
+                throw new Error("[VERHALT-STEP]: It must start with alphabetic character. " + char.target);
             }
         }
 
         if(bracketDepth !== 0) {
-            if (char.isAlphanumeric) {
-                contentBuffer.push(char.target);
-            }
+            contentBuffer.push(char.target);
         }
 
         if(char.isCrulyOpenBracket || char.isSquareOpenBracket) {
