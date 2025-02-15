@@ -5,7 +5,6 @@ export class InfoChar implements Disposable {
     #isNumeric : boolean | undefined;
     #isWhitespace : boolean | undefined;
     #isSpecial : boolean | undefined;
-    #isUnknown : boolean | undefined;
 
     constructor(target : string) {
         if(typeof target !== "string") throw new Error("[VERHALT-INFOCHAR]: Target must be string");
@@ -13,30 +12,12 @@ export class InfoChar implements Disposable {
 
         this.#target = target;
         this.#isAlphabeticLowerCase = /[a-z]/.test(target);
-        this.#isAlphabeticUpperCase = /[A-Z]/.test(target);
+        this.#isAlphabeticUpperCase = !this.#isAlphabeticLowerCase && /[A-Z]/.test(target);
 
-        if(!this.isAlphabetic) {
-            this.#isNumeric = /[0-9]/.test(target);
-        }
-        else {
-            this.#isNumeric = false;
-        }
+        this.#isNumeric = !this.isAlphabetic && /[0-9]/.test(target);
 
-        if(!this.isAlphanumeric) {
-            this.#isWhitespace = /\s/.test(target);
-        }
-        else {
-            this.#isWhitespace = false;
-        }
-
-        if(!this.isAlphawhite) {
-            this.#isSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(target);
-            this.#isUnknown = !this.#isSpecial;
-        }
-        else {
-            this.#isSpecial = false;
-            this.#isUnknown = false;
-        }
+        this.#isWhitespace = !this.isAlphanumeric && /\s/.test(target);
+        this.#isSpecial = !this.isAlphawhite && /[!@#$%^&*(),.?":{}|<>]/.test(target);
     }
 
     public get char() : string {
@@ -75,10 +56,6 @@ export class InfoChar implements Disposable {
         return this.#isSpecial as boolean;
     }
 
-    public get isUnknown() : boolean {
-        return this.#isUnknown as boolean;
-    }
-
 
     [Symbol.dispose]() : void {
         this.#target = undefined;
@@ -87,6 +64,5 @@ export class InfoChar implements Disposable {
         this.#isNumeric = undefined;
         this.#isWhitespace = undefined;
         this.#isSpecial = undefined;
-        this.#isUnknown = undefined;
     }
 }
