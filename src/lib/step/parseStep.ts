@@ -14,7 +14,7 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
     let catching : VerhaltStepCatching = "native";
 
     let finalize : boolean = false;
-    let bracketForm : "curly" | "square" | undefined = undefined;
+    let bracketForm : "{}" | "[]" | undefined = undefined;
     let bracketDepth = 0;
 
     const contentBuffer : string[] = [];
@@ -24,9 +24,9 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
 
         if(ci === 0) {
             if(/[\{\[]/.test(char)) {
-                bracketForm = char === "{" ? "curly" : "square";
+                bracketForm = char === "{" ? "{}" : "[]";
 
-                form = bracketForm === "curly" ? "name" : "index";
+                form = bracketForm === "{}" ? "name" : "index";
                 structure = "variable";
             }
             else if(/[a-zA-Z]/.test(char)) {
@@ -42,20 +42,19 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
         }
 
         if(char === "{" || char === "[") {
-            if(bracketDepth === 0) {
-                if(!bracketForm) {
-                    throw new Error("[VERHALT-STEP]: Bracket is not defined.");
-                }
+            if(!bracketForm) {
+                throw new Error("[VERHALT-STEP]: Bracket is not defined.");
             }
-            bracketDepth++;
+
+            if(bracketForm.includes(char))
+                bracketDepth++;
         }
         else if(char === "}" || char === "]") {
-            if(bracketDepth === 0) {
-                if(!bracketForm) {
-                    throw new Error("[VERHALT-STEP]: Bracket is not defined.");
-                }
+            if(!bracketForm) {
+                throw new Error("[VERHALT-STEP]: Bracket is not defined.");
             }
-            else if(bracketDepth === 1) {
+            
+            if(bracketDepth === 1) {
                 if(!["?", "!", undefined].includes(input[ci + 1])) {
                     throw new Error("[VERHALT-STEP]: Unexpected character after closing bracket.");
                 }
@@ -63,7 +62,8 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
                 contentBuffer.pop();
             }
 
-            bracketDepth--;
+            if(bracketForm.includes(char))
+                bracketDepth--;
         }
         else {
             if(bracketDepth === 0) {
