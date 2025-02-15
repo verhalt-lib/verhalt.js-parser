@@ -17,10 +17,18 @@ it("should return correct values for static name steps", () => {
     expect(parseStep("My_StEp")).toEqual({ form: "name", display: "My_StEp", content: "My_StEp", structure: "static", catching: "native" });
     expect(parseStep("My_StEp?")).toEqual({ form: "name", display: "My_StEp?", content: "My_StEp", structure: "static", catching: "optional" });
     expect(parseStep("My_StEp!")).toEqual({ form: "name", display: "My_StEp!", content: "My_StEp", structure: "static", catching: "strict" });
+    
+    expect(parseStep("__My_StEp")).toEqual({ form: "name", display: "__My_StEp", content: "__My_StEp", structure: "static", catching: "native" });
+    expect(parseStep("__My_StEp?")).toEqual({ form: "name", display: "__My_StEp?", content: "__My_StEp", structure: "static", catching: "optional" });
+    expect(parseStep("__My_StEp!")).toEqual({ form: "name", display: "__My_StEp!", content: "__My_StEp", structure: "static", catching: "strict" });
 
     expect(parseStep("{My_StEp}")).toEqual({ form: "name", display: "{My_StEp}", content: "My_StEp", structure: "static", catching: "native" });
     expect(parseStep("{My_StEp}?")).toEqual({ form: "name", display: "{My_StEp}?", content: "My_StEp", structure: "static", catching: "optional" });
     expect(parseStep("{My_StEp}!")).toEqual({ form: "name", display: "{My_StEp}!", content: "My_StEp", structure: "static", catching: "strict" });
+    
+    expect(parseStep("{__My_StEp}")).toEqual({ form: "name", display: "{__My_StEp}", content: "__My_StEp", structure: "static", catching: "native" });
+    expect(parseStep("{__My_StEp}?")).toEqual({ form: "name", display: "{__My_StEp}?", content: "__My_StEp", structure: "static", catching: "optional" });
+    expect(parseStep("{__My_StEp}!")).toEqual({ form: "name", display: "{__My_StEp}!", content: "__My_StEp", structure: "static", catching: "strict" });
 })
 
 it("should return correct values for variable name steps", () => {
