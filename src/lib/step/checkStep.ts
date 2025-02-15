@@ -1,3 +1,3 @@
 export function checkStep(input : string) {
-    if(typeof input !== "string") throw new Error("[VERHALT-STEP]: Step must be string");
+    if(!["string", "null", "undefined"].includes(typeof input)) throw new Error("[VERHALT-STEP]: Step can be string, null or undefined");
 }
