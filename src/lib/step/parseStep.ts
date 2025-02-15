@@ -103,6 +103,8 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
                 }
             }
         }
+
+        char[Symbol.dispose]();
     }
 
     display = input;
