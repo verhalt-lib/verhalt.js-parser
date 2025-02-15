@@ -4,5 +4,5 @@ export function validateStepName(input : string) : boolean {
 }
 
 export function validateStepNameUnsafe(input : string) : boolean {
-    return /^\b[a-zA-Z][a-zA-Z0-9\_]*\b$/.test(input);
+    return /^\b[a-zA-Z\_][\w]*\b$/.test(input);
 }
