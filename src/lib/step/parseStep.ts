@@ -1,6 +1,7 @@
 import { VerhaltStep, VerhaltStepCatching, VerhaltStepContent, VerhaltStepDisplay, VerhaltStepForm, VerhaltStepStructure } from "@verhalt/types/lib";
 import { validateStepName } from "./validateStepName";
 import { validateStepIndex } from "./validateStepIndex";
+import { CharInfo } from "../charInfo";
 
 export function parseStep(input : string) : VerhaltStep | undefined {
     return parseStepUnsafe(input);
@@ -23,40 +24,43 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
     const contentBuffer : string[] = [];
 
     for(let ci = 0; ci < input.length; ci++) {
-        const char = input[ci];
-
-        const isLetter = /[a-zA-Z]/.test(char);
-        const isNumber = !isLetter && /[0-9]/.test(char);
-        const isCruly = !isNumber && /[\{\}]/.test(char);
-        const isSquare = !isCruly && /[\[\]]/.test(char);
-        const isBracket = isCruly || isSquare;
+        const char = new CharInfo(input[ci]);
 
         if(ci === 0) {
-            if(/[\{\[]/.test(char)) {
-                bracketForm = char === "{" ? "{}" : "[]";
-
-                form = bracketForm === "{}" ? "name" : "index";
+            if(char.isCrulyOpenBracket || char.isSquareOpenBracket) {
+                if(char.isCrulyOpenBracket) {
+                    form = "name";
+                    bracketForm = "{}";
+                }
+                else {
+                    form = "index";
+                    bracketForm = "[]";
+                }
             }
-            else if(/[a-zA-Z]/.test(char)) {
-                bracketForm = undefined;
-
+            else if(char.isAlphabetic) {
                 form = "name";
+                bracketForm = undefined;
+            }
+            else {
+                throw new Error("[VERHALT-STEP]: It must start with alphabetic character.");
             }
         }
 
         if(bracketDepth !== 0) {
-            contentBuffer.push(char);
+            if (char.isAlphanumeric) {
+                contentBuffer.push(char.target);
+            }
         }
 
-        if(char === "{" || char === "[") {
+        if(char.isCrulyOpenBracket || char.isSquareOpenBracket) {
             if(!bracketForm) {
                 throw new Error("[VERHALT-STEP]: Bracket is not defined.");
             }
 
-            if(bracketForm.includes(char))
+            if(bracketForm.includes(char.target))
                 bracketDepth++;
         }
-        else if(char === "}" || char === "]") {
+        else if(char.isCrulyCloseBracket || char.isSquareCloseBracket) {
             if(!bracketForm) {
                 throw new Error("[VERHALT-STEP]: Bracket is not defined.");
             }
@@ -69,20 +73,20 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
                 contentBuffer.pop();
             }
 
-            if(bracketForm.includes(char))
+            if(bracketForm.includes(char.target))
                 bracketDepth--;
         }
         else {
             if(bracketDepth === 0) {
-                if(!/[a-zA-Z0-9]/.test(char)) {
+                if(!char.isAlphanumeric) {
 
                     if(ci === input.length - 1) {
 
-                        if(!/[\?\!]/.test(char)) {
+                        if(char.isQuestionMark || char.isExclamationMark) {
                             throw new Error("[VERHALT-STEP]: Unexpected character after '?' or '!'.");
                         }
 
-                        switch  (char) {
+                        switch  (char.target) {
                             case "?":
                                 catching = "optional";
                                 break;
