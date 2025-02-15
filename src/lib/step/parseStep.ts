@@ -8,6 +8,7 @@ export function parseStep(input : string) : VerhaltStep | undefined {
 
 export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
     if (!input) return undefined;
+    if (input.length === 0) return undefined;
 
     let form : VerhaltStepForm | null = null;
     let display : VerhaltStepDisplay | null = null;
@@ -23,6 +24,12 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
 
     for(let ci = 0; ci < input.length; ci++) {
         const char = input[ci];
+
+        const isLetter = /[a-zA-Z]/.test(char);
+        const isNumber = !isLetter && /[0-9]/.test(char);
+        const isCruly = !isNumber && /[\{\}]/.test(char);
+        const isSquare = !isCruly && /[\[\]]/.test(char);
+        const isBracket = isCruly || isSquare;
 
         if(ci === 0) {
             if(/[\{\[]/.test(char)) {
@@ -83,6 +90,8 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
                                 catching = "strict";
                                 break;
                         }
+
+                        contentBuffer.pop();
                     }
                     else {
                         throw new Error("[VERHALT-STEP]: Unexpected character.");
