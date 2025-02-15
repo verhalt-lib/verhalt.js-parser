@@ -1,17 +1,42 @@
 export abstract class InfoChar implements Disposable {
     #char : string | undefined;
-    #isLetterLowerCase : boolean | undefined;
-    #isLetterUpperCase : boolean | undefined;
+    #isAlphabeticLowerCase : boolean | undefined;
+    #isAlphabeticUpperCase : boolean | undefined;
     #isNumeric : boolean | undefined;
+    #isWhitespace : boolean | undefined;
+    #isSpecial : boolean | undefined;
+    #isUnknown : boolean | undefined;
 
     constructor(char : string) {
         if(typeof char !== "string") throw new Error("[VERHALT-INFOCHAR]: Char must be string");
         if(char.length !== 1) throw new Error("[VERHALT-INFOCHAR]: Char must be of length 1");
 
         this.#char = char;
-        this.#isLetterLowerCase = /[a-z]/.test(char);
-        this.#isLetterUpperCase = /[A-Z]/.test(char);
-        this.#isNumeric = /[0-9]/.test(char);
+        this.#isAlphabeticLowerCase = /[a-z]/.test(char);
+        this.#isAlphabeticUpperCase = /[A-Z]/.test(char);
+
+        if(!this.isAlphabetic) {
+            this.#isNumeric = /[0-9]/.test(char);
+        }
+        else {
+            this.#isNumeric = false;
+        }
+
+        if(!this.isAlphanumeric) {
+            this.#isWhitespace = /\s/.test(char);
+        }
+        else {
+            this.#isWhitespace = false;
+        }
+
+        if(!this.isAlphawhite) {
+            this.#isSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(char);
+            this.#isUnknown = !this.#isSpecial;
+        }
+        else {
+            this.#isSpecial = false;
+            this.#isUnknown = false;
+        }
     }
 
     public get char() : string {
@@ -19,14 +44,14 @@ export abstract class InfoChar implements Disposable {
     }
 
     public get isLowerCaseLetter() : boolean {
-        return this.#isLetterLowerCase as boolean;
+        return this.#isAlphabeticLowerCase as boolean;
     }
 
     public get isUpperCaseLetter() : boolean {
-        return this.#isLetterUpperCase as boolean;
+        return this.#isAlphabeticUpperCase as boolean;
     }
 
-    public get isLetter() : boolean {
+    public get isAlphabetic() : boolean {
         return this.isLowerCaseLetter || this.isUpperCaseLetter;
     }
 
@@ -35,7 +60,15 @@ export abstract class InfoChar implements Disposable {
     }
 
     public get isAlphanumeric() : boolean {
-        return this.isLetter || this.isNumeric;
+        return this.isAlphabetic || this.isNumeric;
+    }
+
+    public get isWhitespace() : boolean {
+        return this.#isWhitespace as boolean;
+    }
+
+    public get isAlphawhite() : boolean {
+        return this.isAlphanumeric || this.isWhitespace;
     }
 
     protected abstract onDispose(): void;
