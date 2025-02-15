@@ -26,7 +26,7 @@ export class CharInfo implements Disposable {
         this.#isNumeric = !this.isAlphabetic && /[0-9]/.test(target);
 
         this.#isWhitespace = !this.isAlphanumeric && /\s/.test(target);
-        this.#isSpecial = !this.isAlphawhite && /[!@#$%^&*(),.?":{}|<>]/.test(target);
+        this.#isSpecial = !this.isAlphawhite && /[\!\@\#\$\%\^\&\*\(\)\,\.\?\"\:\{\}\|\<\>\[\]]/.test(target);
 
         if(this.#isSpecial) {
             switch(target) {
