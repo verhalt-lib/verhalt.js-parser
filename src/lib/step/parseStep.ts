@@ -1,5 +1,6 @@
 import { VerhaltStep, VerhaltStepCatching, VerhaltStepContent, VerhaltStepDisplay, VerhaltStepForm, VerhaltStepStructure } from "@verhalt/types/lib";
 import { validateStepName } from "./validateStepName";
+import { validateStepIndex } from "./validateStepIndex";
 
 export function parseStep(input : string) : VerhaltStep | undefined {
     return parseStepUnsafe(input);
@@ -96,6 +97,9 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
 
     if(form === "name") {
         structure = validateStepName(content) ? "static" : "variable";
+    }
+    else {
+        structure = validateStepIndex(content) ? "static" : "variable";
     }
 
     if(form && display && content && structure && catching) {
