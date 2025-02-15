@@ -30,7 +30,7 @@ export function parseStepUnsafe(input : string) : VerhaltStep | undefined {
         contentBuffer.push(char.target);
 
         if(ci === 0) {
-            if(char.isAlphabetic) {
+            if(char.isAlphabetic || char.target === "_") {
                 form = "name";
                 bracketForm = undefined;
             }
