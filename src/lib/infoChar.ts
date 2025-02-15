@@ -71,6 +71,15 @@ export abstract class InfoChar implements Disposable {
         return this.isAlphanumeric || this.isWhitespace;
     }
 
+    public get isSpecial() : boolean {
+        return this.#isSpecial as boolean;
+    }
+
+    public get isUnknown() : boolean {
+        return this.#isUnknown as boolean;
+    }
+
+    
     protected abstract onDispose(): void;
 
     [Symbol.dispose](): void {
