@@ -2,6 +2,7 @@ export abstract class InfoChar implements Disposable {
     #char : string | undefined;
     #isLetterLowerCase : boolean | undefined;
     #isLetterUpperCase : boolean | undefined;
+    #isNumeric : boolean | undefined;
 
     constructor(char : string) {
         if(typeof char !== "string") throw new Error("[VERHALT-INFOCHAR]: Char must be string");
@@ -10,6 +11,7 @@ export abstract class InfoChar implements Disposable {
         this.#char = char;
         this.#isLetterLowerCase = /[a-z]/.test(char);
         this.#isLetterUpperCase = /[A-Z]/.test(char);
+        this.#isNumeric = /[0-9]/.test(char);
     }
 
     public get char() : string {
@@ -26,6 +28,14 @@ export abstract class InfoChar implements Disposable {
 
     public get isLetter() : boolean {
         return this.isLowerCaseLetter || this.isUpperCaseLetter;
+    }
+
+    public get isNumeric() : boolean {
+        return this.#isNumeric as boolean;
+    }
+
+    public get isAlphanumeric() : boolean {
+        return this.isLetter || this.isNumeric;
     }
 
     protected abstract onDispose(): void;
